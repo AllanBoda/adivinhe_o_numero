@@ -18,29 +18,29 @@ public class GreetClient {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
         System.out.println("Conexão estabelecida com o servidor.");
+        String quitMessage = "";
 
-        String message = in.readLine();
-        System.out.println(message);
+        while (!quitMessage.equals("!quit")) {
+            String message = in.readLine();
+            System.out.println(message);
 
-        Scanner scanner = new Scanner(System.in);
-        String guess = scanner.nextLine();
-        out.println(guess);
-
-        boolean gameFinished = false;
-
-        while (!gameFinished) {
-            String response = in.readLine();
-            System.out.println(response);
-
-            if (response.contains("Parabéns") || response.contains("Você perdeu")) {
-                gameFinished = true;
+            if (message.contains("Parabéns")) {
                 break;
             }
 
-            guess = scanner.nextLine();
+            Scanner scanner = new Scanner(System.in);
+            String guess = scanner.nextLine();
             out.println(guess);
 
+            String response = in.readLine();
+            System.out.println(response);
+
+            if (response.contains("Parabéns")) {
+                break;
+            }
+
             if ("!quit".equals(guess)) {
+                quitMessage = "!quit";
                 System.out.println("Conexão encerrada pelo cliente.");
                 break;
             }
